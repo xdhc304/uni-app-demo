@@ -1,8 +1,14 @@
 <template>
 	<view class="content">
-		<image class="logo" src="/static/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{title}}</text>
+		<view class="header">
+			<image class="logo" src="/static/logo.png"></image>
+		</view>
+		<view>
+			<swiper class="swiper" indicator-dots="true" autoplay="true" interval="3000" duration="500">
+					<swiper-item :key="index" v-for="(item, index) in bannerList">
+							<image class="banner" :src="item.cycleUrl"></image>
+					</swiper-item>
+			</swiper>
 		</view>
 	</view>
 </template>
@@ -11,7 +17,7 @@
 	export default {
 		data() {
 			return {
-				title: 'Hello'
+				bannerList: []
 			}
 		},
 		onLoad() {
@@ -20,7 +26,7 @@
 		methods: {
 			getData() {
 				uni.request({
-				    url: '/api/find_column_link', //仅为示例，并非真实接口地址。
+				    url: 'http://47.99.222.45:8089/api/cycle_url_list', //仅为示例，并非真实接口地址。
 				    data: {
 				        // text: 'uni.request'
 				    },
@@ -29,7 +35,7 @@
 				    },
 				    success: (res) => {
 				        console.log(res.data);
-				        this.text = 'request success';
+								this.bannerList = res.data.data;
 				    }
 				});
 			}
@@ -39,24 +45,22 @@
 
 <style>
 	.content {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
 	}
-
+	
+	.header {
+		height: 60px;
+		background: #383D41;
+	}
+	
 	.logo {
-		height: 200rpx;
-		width: 200rpx;
-		margin-top: 200rpx;
-		margin-left: auto;
-		margin-right: auto;
-		margin-bottom: 50rpx;
+		width: 150px;
+		height: 100%;
+		padding-left: 5px;
 	}
 
-	.text-area {
-		display: flex;
-		justify-content: center;
+	.banner {
+		width: 100%;
+		height: 150px;
 	}
 
 	.title {
